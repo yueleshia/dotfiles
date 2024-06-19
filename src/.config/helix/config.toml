@@ -1,0 +1,89 @@
+theme = "eiffel"  # eiffel, emacs, flexoki_light, kaolin_light, modus_operandi_tritanopia, onelight
+
+[editor]
+auto-format  = false
+auto-pairs   = false
+bufferline   = "multiple"
+cursor-shape = { insert = "bar" } # Visual indication we are in insert mode
+color-modes  = true
+line-number  = "absolute"
+rulers       = [81]
+soft-wrap    = { enable = true } # I want all text displayed
+true-color   = true
+
+lsp               = { display-messages = true }
+# I want the branch name displayed
+statusline        = { left = ["mode", "file-name", "version-control", "spinner"] }
+continue-comments = false
+
+[editor.whitespace.render]
+# highlight trailing whitespace: https://github.com/helix-editor/helix/issues/2719
+#space = "trailing"
+tab   = "all"
+nbsp  = "all"
+
+################################################################################
+# Key Mappings
+################################################################################
+[keys]
+normal.esc   = ["collapse_selection", "keep_primary_selection"]
+normal.space = { q = ":quit", w = ":write", c = ":config-reload" }
+
+### Multilingual support (Vim-barbaric): Swap to english for normal mode
+# Fctix's model is your IME has two modes: active and deactived
+# We always active on insert mode, and always deactivate on exiting insert mode
+# As a result, you want to have two english keyboards, on
+normal.i     = [":sh fcitxremote.sh -o", "collapse_selection", "insert_mode"]
+normal.c     = [":sh fcitxremote.sh -o", "change_selection"]
+normal.a     = [":sh fcitxremote.sh -o", "collapse_selection", "append_mode"]
+
+# Vim muscle memory
+normal."$"   = "extend_to_line_end"
+normal."%"   = "match_brackets"
+normal.0     = "extend_to_line_start"
+normal."^"   = "goto_first_nonwhitespace"
+normal."{"   = ["extend_to_line_bounds", "goto_prev_paragraph"]
+normal."}"   = ["extend_to_line_bounds", "goto_next_paragraph"]
+normal.C-r   = "redo"
+normal.D     = ["extend_to_line_end", "delete_selection"]
+normal.g     = { j = "move_visual_line_down", k = "move_visual_line_up" }
+normal.j     = "move_line_down"
+normal.k     = "move_line_up"
+normal.x     = "delete_selection"
+normal.V     = ["select_mode", "extend_to_line_bounds"]
+normal.","   = "extend_line_below" # To replace x
+
+select."$"   = "extend_to_line_end"
+select.0     = "extend_to_line_start"
+select."_"   = "goto_first_nonwhitespace"
+select.o     = "flip_selections"
+select.g     = { j = "extend_visual_line_down", k = "extend_visual_line_up" }
+select.j     = "extend_line_down"
+select.k     = "extend_line_up"
+select.x     = "delete_selection"
+select.","   = "extend_line_below"
+select.esc   = ["collapse_selection", "keep_primary_selection", "normal_mode"]
+
+### Multilingual support (Vim-barbaric): Swap to english for normal mode
+insert.esc   = [":sh fcitxremote.sh -c", "normal_mode"]
+# C-x 8 is emacs insert
+normal."C-x"."C-u"   = "@<esc>:insert-output /bin/printf %b \\\\\\\\u00" # sh printf does not support \\u
+insert."C-x"."C-u"   = "@<esc>:insert-output /bin/printf %b \\\\\\\\u00" # sh printf does not support \\u
+
+insert.tab.s.a = ":insert-output tmux-window-output-to-buffer.sh snippets.sh"
+insert.tab.s.s = ":insert-output tmux-window-output-to-buffer.sh snippets.sh \"symbols\""
+insert.tab.tab = ":insert-output tmux-window-output-to-buffer.sh snippets.sh \"$HX_EXT\""
+
+normal.tab.p   = "@?<lt><gt><ret>c"
+insert.tab.p   = "@<esc><tab>p"
+normal.tab.n   = "@/<lt><gt><ret>c"
+insert.tab.n   = "@<esc><tab>n"
+
+# We will have run \q twice for auto format, all commands are run async it seems
+normal."\\".q  = [":write", ":sh [ -n \"${TMUX}\" ] && tmux new-window -d build.sh background --temp \"$HX_PATH\""]
+# We sleep bec ause helix seems to run these async, thus creating two tmux panes
+normal."\\".w  = [":write", ":sh tmux-alt-pane.sh send-keys -X cancel", ":sh sleep 0.03; tmux-alt-pane.sh send-keys \"build.sh build --temp \" \"$HX_PATH\" Enter"]
+normal."\\".e  = [":write", ":sh tmux-alt-pane.sh send-keys -X cancel", ":sh tmux-editor-run.sh \"$HX_EXT\" \"$HX_PATH\""]
+normal."\\".r  = ":sh tmux-alt-pane.sh send-keys -X cancel"
+normal."\\".t  = ":sh tmux-alt-pane.sh kill-pane"
+normal."\\".l  = [":write", ":sh tmux-alt-pane.sh send-keys \"build.sh lint \" \"$HX_PATH\" ENTER", ":reload"]
