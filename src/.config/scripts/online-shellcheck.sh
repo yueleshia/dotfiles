@@ -1,0 +1,1 @@
+../../../share/online-shellcheck/online-shellcheck.sh
