@@ -81,7 +81,7 @@ main() {
     ;; go)       revive "${file}"
     ;; py)       ruff check "${file}"
     ;; rs)       cargo clippy
-    ;; zig)      zig fmt "${file}"; zig ast-check "${file}"
+    ;; zig)      zig fmt --ast-check "${file}"
 
     ;; sh)       shellcheck "${file}"
 
@@ -129,6 +129,7 @@ main() {
     ;; md)      rustdoc "${file}" --output "${target_dir}"
     ;; tex)     tectonic "${file}" --print --outdir "${target_dir}" "$@"
     ;; latex)   process_latex "${file}" "${target_dir}/${stem}"
+    ;; typ)     typst compile "${file}" "${target_dir}/${stem}.pdf"
     ;; *)  printf %s\\n "Unsupported filetype for building file '${file}'" >&2
   esac
   "${BUILD}" && notify.sh "Compiled ${file}"
@@ -156,7 +157,7 @@ main() {
     ;; tf)      tofu plan -refresh=false
 
     ;; html)    setsid falkon --private-browsing --no-extensions --new-window "${file}"
-    ;; md|rmd|adoc|latex|tex)
+    ;; md|rmd|adoc|latex|tex|typ)
       if [ -f "${new_target}.pdf" ]
         then handle.sh gui "${new_target}.pdf"
         else setsid falkon "${new_target}.html"
@@ -188,7 +189,6 @@ process_adoc() {
     fi
   } | asciidoctor - --backend html5 \
     ${bibtex} \
-    --attribute source-highlighter='pygments' \
     --attribute 'webfonts!' \
     --attribute imagesdir="${target}" \
   >"${2}.html"

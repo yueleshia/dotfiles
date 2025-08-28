@@ -8,6 +8,8 @@ use-grammars = { only = [
   "toml", "typescript", "tsx", "vim", "xml", "yaml", "zig"
 ] }
 
+[language-server.clangd]
+command = "clangd"
 [language-server.rnix-lsp]
 command = "rnix-lsp"
 [language-server.rust-analyzer]
@@ -22,9 +24,25 @@ command = "texlab"
 [language-server.deno]
 command = "deno"
 args    = ["lsp"]
+[language-server.deno.config.deno]
+enable = true
+unstable = true
+suggest.imports.hosts = { "https://deno.land" = true }
+inlayHints.parameterNames.enabled = "all"
+inlayHints.parameterTypes.enabled = true
+inlayHints.variableTypes.enabled = true
+inlayHints.propertyDeclarationTypes.enabled  = true
+inlayHints.functionLikeReturnTypes.enabled = true
+inlayHints.enumMemberValues.enabled = true
 
 ################################################################################
 # Programming languages
+[[language]]
+name             = "c"
+scope            = "source.c"
+file-types       = ["c", "h"]
+language-servers = [{ name = "clangd" }]
+
 [[language]]
 name             = "rust"
 scope            = "source.rs"

@@ -4,13 +4,13 @@
   description = "Multi-Host Home Manager configuration";
 
   inputs = {
-    nixpkgs.url  = "github:NixOS/nixpkgs/nixos-24.05"; #nixpkgs.url  = "nixpkgs";
-    unstable.url = "github:NixOS/nixpkgs/bc0b105ed11afa4d073e2b60ce6b94c1a72253bc"; #unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    testpkgs.url = "github:NixOS/nixpkgs/bc0b105ed11afa4d073e2b60ce6b94c1a72253bc"; # For incremental upgrades
-    home-manager = { url = github:nix-community/home-manager/release-24.05; inputs.packages.follows = "nixpkgs"; };
+    nixpkgs.url  = "github:NixOS/nixpkgs/b1b3291469652d5a2edb0becc4ef0246fff97a7c"; # nixos-25.05   #nixpkgs.url  = "nixpkgs";
+    unstable.url = "github:NixOS/nixpkgs/3b9f00d7a7bf68acd4c4abb9d43695afb04e03a5"; #unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    testpkgs.url = "github:NixOS/nixpkgs/3b9f00d7a7bf68acd4c4abb9d43695afb04e03a5"; # For incremental upgrades
+    home-manager = { url = github:nix-community/home-manager/release-25.05; inputs.packages.follows = "nixpkgs"; };
 
-    mktoc        = { url = path:./pkgs/mktoc;  inputs.packages.follows = "nixpkgs"; };
-    reader       = { url = path:./pkgs/reader; inputs.packages.follows = "nixpkgs"; };
+    #mktoc        = { url = path:./pkgs/mktoc;  inputs.packages.follows = "nixpkgs"; };
+    #reader       = { url = path:./pkgs/reader; inputs.packages.follows = "nixpkgs"; };
   };
 
   outputs = { nixpkgs, unstable, testpkgs, home-manager, ... }@inputs: let
