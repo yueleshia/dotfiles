@@ -4,9 +4,10 @@
   description = "Multi-Host Home Manager configuration";
 
   inputs = {
-    nixpkgs.url  = "github:NixOS/nixpkgs/b1b3291469652d5a2edb0becc4ef0246fff97a7c"; # nixos-25.05   #nixpkgs.url  = "nixpkgs";
-    unstable.url = "github:NixOS/nixpkgs/3b9f00d7a7bf68acd4c4abb9d43695afb04e03a5"; #unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    testpkgs.url = "github:NixOS/nixpkgs/3b9f00d7a7bf68acd4c4abb9d43695afb04e03a5"; # For incremental upgrades
+    nixpkgs.url  = "github:NixOS/nixpkgs/9243f3e5dc86ed8c61c09da1fa0493a87b150621"; # nixos-25.05   #nixpkgs.url  = "nixpkgs";
+    unstable.url = "github:NixOS/nixpkgs/d2a32fd9a82b25f934b4ea8e5e90e704ad681a1d"; #unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    testpkgs.url = "github:NixOS/nixpkgs/d2a32fd9a82b25f934b4ea8e5e90e704ad681a1d"; # For incremental upgrades
+
     home-manager = { url = github:nix-community/home-manager/release-25.05; inputs.packages.follows = "nixpkgs"; };
 
     #mktoc        = { url = path:./pkgs/mktoc;  inputs.packages.follows = "nixpkgs"; };

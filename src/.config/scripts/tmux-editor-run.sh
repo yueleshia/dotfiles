@@ -30,6 +30,7 @@ run_line="$( <"${path}" awk -v filetype="${filetype}" -v path="${path}" '
     r["rust_1"]       = "^ *\\/\\/run:";           r["rust_2"]       = ""
     r["java_1"]       = "^ *\\/\\/run:";           r["java_2"]       = ""
     r["js_1"]         = "^ *\\/\\/run:";           r["js_2"]         = ""
+    r["mjs_1"]        = "^ *\\/\\/run:";           r["mjs_2"]        = ""
     r["roc_1"]        = "^ *#run:";                r["roc_2"]        = ""
     r["ts_1"]         = "^ *\\/\\/run:";           r["ts_2"]         = ""
     r["javascript_1"] = "^ *\\/\\/run:";           r["javascript_2"] = ""

@@ -1,36 +1,44 @@
-for id in "$(
-  printf %s\\n Mozilla.Firefox
-  printf %s\\n Brave.Brave
-  printf %s\\n Microsoft.Teams
-  printf %s\\n Giorgiotani.PeaZip
-  printf %s\\n VSCodium.VSCodium
-  printf %s\\n JGraph.Draw
-  printf %s\\n dbeaver.dbeaver
-  printf %s\\n Notepad++.Notepad++
-  printf %s\\n "Wacom.WacomTabletDriver"
-  printf %s\\n "Postman.Postman"
-  printf %s\\n "MongoDB.Compass.Community"
+for id in $(
+  echo "glzr-io.glazewm"
+  echo "ZedIndustries.Zed"
+  echo "Mozilla.Firefox"
+  #echo "Brave.Brave"
+  #echo "Microsoft.Teams"
+  echo "Giorgiotani.PeaZip"
+  #echo "VSCodium.VSCodium"
+  echo "JGraph.Draw"
+  echo "DBeaver.DBeaver.Community"
+  echo "Notepad++.Notepad++"
+  #echo "Postman.Postman"
+  echo "MongoDB.Compass.Community"
 
-  printf %s\\n "Amazon.AWSCLI"
-  printf %s\\n "Amazon.SessionManagerPlugin"
+  echo "Wacom.WacomTabletDriver"
+  echo "KDE.Krita"
 
-  printf %s\\n Microsoft.Azure.StorageExplorer
-  printf %s\\n 9NP355QT2SQB # AzureVPN
+  echo "Amazon.AWSCLI"
+  echo "Amazon.SessionManagerPlugin"
 
-  #printf %s\\n GoLang.Go
-  #printf %s\\n Rustlang.Rustup
-  #printf %s\\n Microsoft.NuGet
-  #printf %s\\n SmartBear.SoapUI
-  #printf %s\\n BlueStack.BlueStacks
-  #printf %s\\n mRemoteNG.mRemoteNG
-  #printf %s\\n Amazon.AWSCLI #v2
-  #printf %s\\n Microsoft.AzureCLI
-  #printf %s\\n Cisco.WebexTeams
+  #echo "Microsoft.Azure.StorageExplorer"
+  #echo "9NP355QT2SQB" # AzureVPN
 
-  #printf %s\\n ""
-  #printf %s\\n "Webyog.SQLyogCommunity"
-  #printf %s\\n "Microsoft.OneDrive"
-)"; do
-  winget.exe install "${id}"
+  #echo "GoLang.Go"
+  #echo "Rustlang.Rustup"
+  #echo "Microsoft.NuGet"
+  #echo "SmartBear.SoapUI"
+  #echo "BlueStack.BlueStacks"
+  #echo "mRemoteNG.mRemoteNG"
+  #echo "Microsoft.AzureCLI"
+  #echo "Cisco.WebexTeams"
+
+  #echo "Webyog.SQLyogCommunity"
+  #echo "Microsoft.OneDrive"
+); do
+  printf %s\\n "" "== Installing '${id}' ==" >&2
+  winget.exe install --id "${id}" --source winget
+  case "$?"
+  in 0)
+  ;; 20) exit 20
+  ;; 43) printf %s\\n "Skipping '${id}'"
+  esac
 done
 

@@ -9,6 +9,18 @@ cd "${wd}" || exit "$?"
 #run: ./% test
 
 main() {
+  if ! command -v "nix" >/dev/null 2>/dev/null; then
+    script="$( curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)" || exit "$?"
+    sh "${script}" --no-daemon || exit "$?"
+  fi
+  if ! command -v "home-manager" >/dev/null 2>/dev/null; then
+    url="$( nix-instantiate --eval --raw --expr '(import ./flake.nix).inputs.home-manager.url' )" || exit "$?"
+    nix-channel --add "https://github.com/nix-community/home-manager/archive/${url##*/}.tar.gz" home-manager || exit "$?"
+    nix-channel --update || exit "$?"
+    nix-shell '<home-manager>' -A install || exit "$?"
+    nix-channel --remove home-manager
+  fi
+
   choice="${1}"
   if [ -z "${choice}" ]; then
     printf %s\\n "Expected 1 argument. Please give one of the following:" >&2
@@ -35,7 +47,7 @@ main() {
   deglob="$( printf %s\\n ${glob} )"
   write_environment_ncl "${USER}" "${deglob}"
 
-  home-manager switch --extra-experimental-features "nix-command flakes" --flake ".#default"
+  home-manager switch --extra-experimental-features "nix-command flakes" --flake ".#default" --show-trace
 
   # Do not disturb git history
   write_environment_ncl "me" "/tmp"
