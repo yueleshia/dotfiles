@@ -1,8 +1,5 @@
 #run: nickel export % --field text --format raw
 
-let dirs = (import "../../profiles.ncl").current_profile.named_directories in
-
-{ executable = false, text = m%"
 # Seems to refresh the config everytime you run the `lf` client
 #https://github.com/gokcehan/lf
 #https://godoc.org/github.com/gokcehan/lf
@@ -103,7 +100,6 @@ map X $aunpack "${f}"
 map c jumpto
 #map M moveto
 
-"% }
 #
 ## Copy/Move to a named directory
 #cmd copyto ${{

@@ -1,8 +1,6 @@
-#run: nickel export % --field text --format raw
-
-{ executable = true, text = m%"
 #!/usr/bin/env bash
-  # Included shebang for shellcheck. Indent for autodetect indent
+
+# Included shebang for shellcheck. Indent for autodetect inden
 # This originally runs for non-login (terminals after X launched)
 # If sourced manually from '.profile', runs for all terminal instances
 
@@ -93,5 +91,3 @@ if [ -z "${XDG_RUNTIME_DIR}" ]; then
 fi
 
 rrc 'Avoid infinite loop'
-
-"% }

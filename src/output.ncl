@@ -11,29 +11,18 @@ m%"
 
 # export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
 {
-  home.username      = "%{env.username}";
   home.homeDirectory = "%{profile.named_directories.h}";
-
-  # On first run will have to -- enable nix-command and flakes
-  nix = {
-    package                        = %{inputs.pkgs}.nix;
-    registry.nixpkgs.flake         = %{inputs.root_inputs}.nixpkgs;  # Force flake install to follow nixpkgs?
-    settings.experimental-features = ["nix-command" "flakes"];
-  };
-
-  # Do not change this even if upgrading HM. Read release notes before changing.
-  home.stateVersion = "24.05";
 
   # Packages to be in my path
   home.packages = [
     %{profile.packages |> std.string.join "\n"}
+
+    #(builtins.getFlake (toString ./src/pkgs/mktoc)).packages."${system}".default
     #(import ./pkgs/mktoc {}).packages."${system}".default
-    #flake.packages."${system}".default
-  #  (builtins.getFlake (toString ./src/pkgs/mktoc)).packages."${system}".default
-  #  (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-  #  (pkgs.writeShellScriptBin "my-hello" ''
-  #    echo "Hello, ${config.home.username}!"
-  #  '')
+    #(pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+    #(pkgs.writeShellScriptBin "my-hello" ''
+    #  echo "Hello, ${config.home.username}!"
+    #'')
   ];
 
   # @TODO: assert that there are no overlaps, probably on the nickel side?
@@ -63,22 +52,8 @@ m%"
         |> std.string.join "\n"
       }
     }
-    // %{inputs.filegen}.to_import
   ;
-  #{
-  #  ".screenrc".source = dotfiles/screenrc;
-  #  ".gradle/gradle.properties".text = ''
-  #    org.gradle.daemon.idletimeout=3600000
-  #  '';
-  #};
 
   %{profile.extra}
-
-  # If you don't want to manage your shell through HM, then source
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  home.sessionVariables = { };
-
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
 }
 "%

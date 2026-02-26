@@ -1,7 +1,4 @@
-#run: nickel export % --field text --format raw
-
-{ executable = true, text = m%"
-#!/usr/bin/env sh
+#!/bin/sh
 # Commands to run when xserver is started
 
 # Place majority of commands in '.xprofile' because '.xprofile' commands are
@@ -15,5 +12,3 @@
 
 # Turn this process into the i3 manager
 exec i3
-
-"% }
