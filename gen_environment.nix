@@ -1,5 +1,9 @@
-{
-  # these hosts can be called as: `home-manager switch --flake .#port`
+#run: nix-instantiate % --eval --strict --argstr username me --argstr external /tmp --json -A port >src/gen_environment.json
+
+{ username, external, dotfiles } @ input:
+
+# these hosts can be called as: `home-manager switch --flake .#port`
+builtins.mapAttrs (k: v: v // input) {
   docker  = { system = "x86_64-linux"; profile = "personal"; external_glob = "/tmp"; };
   test    = { system = "x86_64-linux"; profile = "personal"; external_glob = "/tm*"; };
   port    = { system = "x86_64-linux"; profile = "personal"; external_glob = "/tmp"; };

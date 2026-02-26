@@ -2,6 +2,7 @@
 
 # For dependency injection
 let env     = import "gen_environment.json" in
+let filegen = import "gen_symlinks.ncl" in
 let inputs  = (import "inputs.ncl").args in
 let profile = (import "profiles.ncl").current_profile in
 
@@ -16,7 +17,7 @@ m%"
   # On first run will have to -- enable nix-command and flakes
   nix = {
     package                        = %{inputs.pkgs}.nix;
-    #registry.nixpkgs.flake         = %{inputs.root_inputs}.nixpkgs;  # Force flake install to follow nixpkgs?
+    registry.nixpkgs.flake         = %{inputs.root_inputs}.nixpkgs;  # Force flake install to follow nixpkgs?
     settings.experimental-features = ["nix-command" "flakes"];
   };
 
@@ -54,8 +55,15 @@ m%"
         )
         |> std.string.join "\n"
       }
+
+      %{
+        filegen.direct
+        |> std.record.to_array
+        |> std.array.map (fun x => "%{x.field |> std.serialize 'Json}.source = oos_symlink %{(env.dotfiles ++ "/" ++ x.value) |> std.serialize 'Json};")
+        |> std.string.join "\n"
+      }
     }
-    // %{inputs.filegen}
+    // %{inputs.filegen}.to_import
   ;
   #{
   #  ".screenrc".source = dotfiles/screenrc;

@@ -3,10 +3,9 @@
 # This script relies only on POSIX-shellscript syntax and nix builtins.
 # Because we are installing our environment, we do not have any dependencies.
 
-if [ "${0}" != "${0%%/*}" ]; then wd="${0%%/*}"; else wd="/"; fi
-cd "${wd}" || exit "$?"
+#run: % test
 
-#run: ./% test
+cd "${0%/*}" || exit "$?"
 
 main() {
   if ! command -v "nix" >/dev/null 2>/dev/null; then
@@ -21,36 +20,35 @@ main() {
     nix-channel --remove home-manager
   fi
 
+  WD="$( nix-instantiate --eval --strict --raw --expr 'toString ./.' )" || exit "$?"
   choice="${1}"
   if [ -z "${choice}" ]; then
     printf %s\\n "Expected 1 argument. Please give one of the following:" >&2
-    hosts="$( nix-instantiate --eval --expr '
-      builtins.trace (toString (builtins.attrNames (import ./hosts.nix))) 0
-    ' 2>&1 >/dev/null )" || exit "$?"
+    hosts="$( nix-instantiate --eval --strict --raw --expr '
+      builtins.toString (builtins.attrNames (import ./gen_environment.nix {
+        username="";
+        external="";
+        dotfiles="";
+      }))
+    ' )" || exit "$?"
     for valid_host in ${hosts#trace: }; do
       printf %s\\n "* ${valid_host}" >&2
     done
     exit 1
   fi
 
-  write_environment_ncl "me" "/tmp"
-  base="$( nix-instantiate --arg target "\"${PWD}/src\"" --eval "walkdir.nix" 2>&1 >/dev/null )" || {
-    printf %s\\n "${base}" >&2
-    exit 1
-  }
-  printf %s\\n "${base#trace: }" >"src/gen_filegen.ncl"
-  glob="$( nix-instantiate --eval --expr '
-    (import ./hosts.nix).'"${choice}"'.external_glob
-  ' )" || exit "$?"
-  glob=${glob#\"}
-  glob=${glob%\"}
+  # File generation 1
+  nix-instantiate --eval --strict --raw "./gen_symlinks.nix" >"src/gen_symlinks.ncl" || exit "$?"
+
+  # File generation 2
+  glob="$( env "me" "/tmp" "/home/me/dotfiles/src" -A "${choice}.external_glob" --raw )" || exit "$?"
   deglob="$( printf %s\\n ${glob} )"
-  write_environment_ncl "${USER}" "${deglob}"
+  env "${USER}" "${deglob}" "${WD}/src" -A "${choice}" --json >"src/gen_environment.json"
 
   home-manager switch --extra-experimental-features "nix-command flakes" --flake ".#default" --show-trace
 
   # Do not disturb git history
-  write_environment_ncl "me" "/tmp"
+  env "me" "/tmp" "/home/me/dotfiles/src" -A "${choice}" --json >"src/gen_environment.json"
 }
 
 provision_nix() {
@@ -65,23 +63,19 @@ provision_home_manager() {
   ~/.nix-profile/bin/nix-shell '<home-manager>' -A install
 }
 
-write_environment_ncl() {
-  raw_json="$( nix-instantiate \
-    --argstr username "${1}" \
-    --argstr external "${2}" \
-    --eval \
-    --expr \
-    '
-      { username, external }: let
-        base = (import ./hosts.nix).'"${choice}"' // {
-          username = username;
-          external = external;
-        };
-      in
-      builtins.trace (builtins.toJSON base) ""
-    ' \
-  2>&1 >/dev/null )"
-  printf %s\\n "${raw_json#trace: }" >"src/gen_environment.json"
+env() {
+  username="${1}"
+  external="${2}"
+  dotfiles="${3}"
+  shift 3
+
+  nix-instantiate --eval --strict \
+    --argstr username "${username}" \
+    --argstr external "${external}" \
+    --argstr dotfiles "${dotfiles}" \
+    "$@" \
+    "./gen_environment.nix" \
+  # end
 }
 
 prompt() {
