@@ -66,6 +66,7 @@ cmd prompt-rename ${{
      single_line="$( printf %s\\n "${name}" | sed "s/'/'\\\\''/g;1s/^/'/;\$s/\$/'/" )"
      lf -remote "send ${id} push :rename<space>${single_line}"
    fi
+   fcitx-remote.sh -o
 }}
 
 # Test

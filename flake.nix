@@ -3,12 +3,13 @@
 {
   description = "Multi-Host Home Manager configuration";
 
+  # To debug in `nix repl`, use load-flake `:lf .` which gives you access to `inputs`
   inputs = {
-    nixpkgs.url  = "github:NixOS/nixpkgs/9243f3e5dc86ed8c61c09da1fa0493a87b150621"; # nixos-25.05   #nixpkgs.url  = "nixpkgs";
-    unstable.url = "github:NixOS/nixpkgs/d2a32fd9a82b25f934b4ea8e5e90e704ad681a1d"; #unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    testpkgs.url = "github:NixOS/nixpkgs/d2a32fd9a82b25f934b4ea8e5e90e704ad681a1d"; # For incremental upgrades
+    nixpkgs.url  = "github:NixOS/nixpkgs/1267bb4920d0fc06ea916734c11b0bf004bbe17e"; # nixos-25.15   #nixpkgs.url  = "nixpkgs";
+    unstable.url = "github:NixOS/nixpkgs/cf59864ef8aa2e178cccedbe2c178185b0365705"; #unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    testpkgs.url = "github:NixOS/nixpkgs/cf59864ef8aa2e178cccedbe2c178185b0365705"; # For incremental upgrades
 
-    home-manager = { url = github:nix-community/home-manager/release-25.05; inputs.packages.follows = "nixpkgs"; };
+    home-manager = { url = github:nix-community/home-manager/release-25.11; inputs.packages.follows = "nixpkgs"; };
 
     #mktoc        = { url = path:./pkgs/mktoc;  inputs.packages.follows = "nixpkgs"; };
     #reader       = { url = path:./pkgs/reader; inputs.packages.follows = "nixpkgs"; };
@@ -70,7 +71,7 @@
             home.username      = environment.username;
 
             # Do not change this even if upgrading HM. Read release notes before changing.
-            home.stateVersion = "24.05";
+            home.stateVersion = "25.11";
 
             # On first run will have to -- enable nix-command and flakes
             nix = {
