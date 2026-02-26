@@ -28,11 +28,7 @@ main() {
   if [ -z "${choice}" ]; then
     printf %s\\n "Expected 1 argument. Please give one of the following:" >&2
     hosts="$( nix-instantiate --eval --strict --raw --expr '
-      builtins.toString (builtins.attrNames (import ./gen_environment.nix {
-        username="";
-        external="";
-        dotfiles="";
-      }))
+      builtins.toString (builtins.attrNames (import ./gen_host.nix { username=""; external=""; }))
     ' )" || exit "$?"
     for valid_host in ${hosts#trace: }; do
       printf %s\\n "* ${valid_host}" >&2
@@ -44,15 +40,15 @@ main() {
   nix-instantiate --eval --strict --raw "./gen_symlinks.nix" >"src/gen_symlinks.ncl" || exit "$?"
 
   # File generation 2
-  glob="$( env "me" "/tmp" "/home/me/dotfiles/src" -A "${choice}.external_glob" --raw )" || exit "$?"
+  glob="$( env "me" "/tmp" -A "${choice}.external_glob" --raw )" || exit "$?"
   deglob="$( printf %s\\n ${glob} )"
-  env "${USER}" "${deglob}" "${WD}/src" -A "${choice}" --json >"src/gen_environment.json"
+  env "${USER}" "${deglob}" -A "${choice}" --json >"src/gen_host.json"
 
   echo 'Make sure to create `mkdir ~/.config/dinit.d/boot.d`'
   home-manager switch --extra-experimental-features "nix-command flakes" --flake ".#default" --show-trace
 
   # Do not disturb git history
-  env "me" "/tmp" "/home/me/dotfiles/src" -A "${choice}" --json >"src/gen_environment.json"
+  env "me" "/tmp" -A "${choice}" --json >"src/gen_host.json"
 }
 
 provision_nix() {
@@ -70,15 +66,13 @@ provision_home_manager() {
 env() {
   username="${1}"
   external="${2}"
-  dotfiles="${3}"
-  shift 3
+  shift 2
 
   nix-instantiate --eval --strict \
     --argstr username "${username}" \
     --argstr external "${external}" \
-    --argstr dotfiles "${dotfiles}" \
     "$@" \
-    "./gen_environment.nix" \
+    "./gen_host.nix" \
   # end
 }
 
