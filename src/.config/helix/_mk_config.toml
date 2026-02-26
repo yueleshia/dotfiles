@@ -33,9 +33,9 @@ normal.space = { q = ":quit", w = ":write", c = ":config-reload", e = ":reload" 
 # Fctix's model is your IME has two modes: active and deactived
 # We always active on insert mode, and always deactivate on exiting insert mode
 # As a result, you want to have two english keyboards, on
-normal.i     = [":sh fcitxremote.sh -o", "collapse_selection", "insert_mode"]
-normal.c     = [":sh fcitxremote.sh -o", "change_selection"]
-normal.a     = [":sh fcitxremote.sh -o", "collapse_selection", "append_mode"]
+normal.i     = [":sh fcitx-remote.sh -o", "collapse_selection", "insert_mode"]
+normal.c     = [":sh fcitx-remote.sh -o", "change_selection"]
+normal.a     = [":sh fcitx-remote.sh -o", "collapse_selection", "append_mode"]
 
 # Vim muscle memory
 normal."$"   = "extend_to_line_end"
@@ -65,7 +65,7 @@ select.","   = "extend_line_below"
 select.esc   = ["collapse_selection", "keep_primary_selection", "normal_mode"]
 
 ### Multilingual support (Vim-barbaric): Swap to english for normal mode
-insert.esc   = [":sh fcitxremote.sh -c", "normal_mode"]
+insert.esc   = [":sh fcitx-remote.sh -c", "normal_mode"]
 # C-x 8 is emacs insert
 normal."C-x"."C-u"   = "@<esc>:insert-output /bin/printf %b \\\\\\\\u00" # sh printf does not support \\u
 insert."C-x"."C-u"   = "@<esc>:insert-output /bin/printf %b \\\\\\\\u00" # sh printf does not support \\u
