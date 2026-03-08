@@ -39,7 +39,7 @@ in "")  printf %s\\n "Invalid action (1st argument)" >&2; exit 1
     case "${input}"
     in ?)
       key="$( printf %s\\n "${line}" | cut -d "${tab}" -f 1 )"
-      handle.sh gui "https://en.wiktionary.org/wiki/${key}" 2>/dev/null
+      setsid librewolf "https://en.wiktionary.org/wiki/${key}" 2>/dev/null
     esac
   done
 

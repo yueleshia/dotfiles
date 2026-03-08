@@ -89,4 +89,5 @@ if [ -z "${XDG_RUNTIME_DIR}" ]; then
   fi
 fi
 
+motd.sh
 rrc 'Avoid infinite loop'

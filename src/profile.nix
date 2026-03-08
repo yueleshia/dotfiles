@@ -6,8 +6,8 @@
     #pkgs.git,         # Will need installed to even check out our repo
 
     #testpkgs.nickel,
-    pkgs.eza pkgs.ripgrep pkgs.fd
-    pkgs.tree pkgs.which
+    pkgs.bat pkgs.eza pkgs.ripgrep pkgs.fd
+    pkgs.exiftool pkgs.file pkgs.tree pkgs.which
     unstable.helix
     pkgs.tmux
     pkgs.htop

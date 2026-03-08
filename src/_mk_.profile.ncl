@@ -71,20 +71,21 @@ export TF_PLUGIN_CACHE_DIR="$XDG_DATA_HOME/terraform"
 # Important
 export GNUPGHOME="$HOME/.local/gnupg"
 export PASSWORD_STORE_DIR="$HOME/.local/password-store"
-
-# Non-programming
 export EMACSINIT="$XDG_CONFIG_HOME/emacs"
 export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/init.vim" | source $MYVIMRC'
+
+# Non-programming
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtkrc-2.0"
+export INPUTRC="$XDG_CONFIG_HOME/rc/inputrc"
+export LESSHISTFILE='/dev/null'
 export LYNX_CFG="$XDG_CONFIG_HOME/lynx/lynx.cfg"
 export LYNX_LSS="$XDG_CONFIG_HOME/lynx/lynx.lss"
-export WGETRC="$XDG_CONFIG_HOME/rc/wgetrc"
-export PYTHONSTARTUP="$XDG_CONFIG_HOME/rc/pythonrc"
 export NOTMUCH_CONFIG="$XDG_CONFIG_HOME/rc/notmuch-config"
-export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtkrc-2.0"
-export LESSHISTFILE='/dev/null'
-export INPUTRC="$XDG_CONFIG_HOME/rc/inputrc"
-export ZDOTDIR="$HOME/.config/zsh"
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/rc/pythonrc"
+export WGETRC="$XDG_CONFIG_HOME/rc/wgetrc"
 export WINEPREFIX="$HOME/.local/wine"
+export DOTREMINDERS="$XDG_CONFIG_HOME/remind"
+export ZDOTDIR="$HOME/.config/zsh"
 
 ################################################################################
 export STARDICT_DATA_DIR="$XDG_DATA_HOME/stardict" # looks in ./dic
