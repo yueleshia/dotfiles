@@ -1,6 +1,3 @@
-#run: nickel export % --field text --format raw
-
-{ executable = false, text = m%"
 # Think about how this affects termux
 #$include /etc/inputrc
 
@@ -19,5 +16,3 @@ set show-all-if-unmodified on
 
 # Cycle backward: Shift-Tab
 "\e[Z": menu-complete-backward
-
-"% }

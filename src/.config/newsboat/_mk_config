@@ -1,6 +1,3 @@
-#run: nickel export % --field text --format raw
-
-{ executable = false, text = m%"
 # Reload on startup and default reloads every 60 minutes
 
 #auto-reload yes
@@ -68,5 +65,3 @@ macro d set external-url-viewer "uriscan.sh -lms - | handle.sh d -l -i"; show-ur
 macro E set browser "sh -c '${EDITOR} ${XDG_CONFIG_HOME}/newsboat/config'"; open-in-browser ; set browser "handle.sh t -l"
 
 ######## close ~ automatically replaced by 'config-newsboat.sh' ########
-
-"% }

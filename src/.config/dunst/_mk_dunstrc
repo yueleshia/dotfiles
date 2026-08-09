@@ -1,6 +1,5 @@
-#run: nickel export % --field text --format raw
+#vim: ft=cfg
 
-{ executable = false, text = m%"
 [global]
     monitor = 0
     follow = keyboard
@@ -151,7 +150,3 @@
 #    appname = Pidgin
 #    summary = *twitter.com*
 #    urgency = normal
-#
-# vim: ft=cfg
-
-"% }

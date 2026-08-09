@@ -1,4 +1,4 @@
-#run: nix-instantiate % --eval --strict --argstr username me --argstr external /tmp --json -A port >src/gen_environment.json
+#run: nix-instantiate % --eval --strict --argstr username me --argstr external /tmp --argstr dotfiles /home/me/dotfiles/src --json -A port >src/gen_environment.json
 
 { username, external, dotfiles } @ input:
 

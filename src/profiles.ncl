@@ -211,8 +211,6 @@ let home = "/home/%{env.username}" in
         ".config/snippets"             = "%{derived.dc}/snippets",
         ".config/vim/after"            = "%{derived.dc}/vim/after",
         ".config/vim/init.vim"         = "%{derived.dc}/vim/init.vim",
-        ".config/helix/config.toml"    = "%{derived.dc}/helix/config.toml",
-        ".config/helix/languages.toml" = "%{derived.dc}/helix/languages.toml",
       },
       xdg_rel = {
         XDG_CACHE_HOME  = ".cache",       # analogous to /etc
