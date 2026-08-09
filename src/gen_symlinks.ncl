@@ -13,6 +13,7 @@
     ".config/ion/initrc" = ".config/ion/_mk_initrc",
     ".config/lf/lfrc" = ".config/lf/_mk_lfrc",
     ".config/mako/config" = ".config/mako/_mk_config",
+    ".config/mpv/input.conf" = ".config/mpv/_mk_input.conf",
     ".config/mpv/mpv.conf" = ".config/mpv/_mk_mpv.conf",
     ".config/newsboat/config" = ".config/newsboat/_mk_config",
     ".config/niri/config.kdl" = ".config/niri/_mk_config.kdl",

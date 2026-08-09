@@ -15,7 +15,7 @@
 
 set shell sh
 set shellopts '-eu'  # '-e' exit on error, '-u' error on unset variables
-set previewer ~/.config/scripts/preview.sh
+set previewer ~/.config/scripts/handle-preview.sh
 
 # All pathnames seem to be given as absolute paths, thus
 set filesep "\n/./"  # Make pathnames unique (www.etalabs.net/sh_tricks.html)
@@ -80,7 +80,7 @@ map T ${{
   )"
 }}
 
-# Bindings
+# Bindings (use `map A &cmd` for background)
 map <esc> :clear;unselect;reload
 map e $hx "$f"
 map E $vim "$f"
@@ -88,8 +88,8 @@ map R prompt-rename
 map T delete
 # Prepend '/.' since ${filesep} acts like a join
 map <c-R> $batch-rename.sh --relative-path-to '.' --direct "/.${fx}"
-map o $handle.sh terminal --file "${f}"
-map O &handle.sh gui --file "${f}"
+map o $handle.sh t "${f}"
+map O $handle.sh g "${f}"
 map D $rm -rf "$f"
 map w $clipboard.sh -w "$f"
 # This cannot deal with files with newlines

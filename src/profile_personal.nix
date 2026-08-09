@@ -23,7 +23,6 @@
     #pkgs.pinentry-curses
     #pkgs.pinentry-qt # @TODO: This breaks dinit for some reason...
     pkgs.mako pkgs.libnotify
-    pkgs.swayimg
 
     pkgs.tor-browser
     pkgs.stc-cli
@@ -38,8 +37,9 @@
     pkgs.asciidoctor pkgs.rubyPackages.rouge
     pkgs.typst
     pkgs.qrcode
+    pkgs.chafa
     pkgs.streamlink pkgs.yt-dlp-light
-    pkgs.mpv
+    #pkgs.mpv # I get `vo_x11_init: Assertion `!vo->x11' failed`
     pkgs.zathura pkgs.zathuraPkgs.zathura_pdf_mupdf
     pkgs.zathuraPkgs.zathura_cb pkgs.zathuraPkgs.zathura_ps
     #pkgs.opentofu

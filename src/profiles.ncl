@@ -19,7 +19,8 @@ let shared = [
   "%{inputs.pkgs}.htop",
   "%{inputs.pkgs}.nmap", "%{inputs.pkgs}.net-tools", "%{inputs.pkgs}.dig",
 
-  "%{inputs.pkgs}.lf",   "%{inputs.pkgs}.skim", "%{inputs.pkgs}.fzf",
+  "%{inputs.pkgs}.lf", "%{inputs.pkgs}.chafa",
+  "%{inputs.pkgs}.skim", "%{inputs.pkgs}.fzf",
   "%{inputs.pkgs}.entr",
   "%{inputs.pkgs}.pass", "%{inputs.pkgs}.gopass", "%{inputs.pkgs}.gnupg",
   #"%{inputs.pkgs}.pinentry-curses",
