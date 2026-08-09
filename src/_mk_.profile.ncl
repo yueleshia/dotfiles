@@ -1,8 +1,6 @@
 #run: nickel export % --field text --format raw
 
-let profile = (import "profiles.ncl").current_profile in
-let xdg     = profile.xdg in
-let dirs    = profile.named_directories in
+let host = import "./gen_host.json" in
 
 { executable = true, text = m%"
 #!/usr/bin/env sh
@@ -19,10 +17,10 @@ let dirs    = profile.named_directories in
 test -e "$HOME/.nix-profile/etc/profile.d/nix.sh" && . "$HOME/.nix-profile/etc/profile.d/nix.sh"
 
 # The defaults, but set them explicitly
-export XDG_CACHE_HOME="%{xdg.XDG_CACHE_HOME}"        # analogous to /etc
-export XDG_CONFIG_HOME="%{xdg.XDG_CONFIG_HOME}"      # analogous to /var/cache
-export XDG_DATA_HOME="%{xdg.XDG_DATA_HOME}"   # analogous to /usr/share
-export XDG_STATE_HOME="%{xdg.XDG_STATE_HOME}"  # analogous to /var/lib
+export XDG_CACHE_HOME="%{host.XDG_CACHE_HOME}"   # analogous to /etc
+export XDG_CONFIG_HOME="%{host.XDG_CONFIG_HOME}" # analogous to /var/cache
+export XDG_DATA_HOME="%{host.XDG_DATA_HOME}"     # analogous to /usr/share
+export XDG_STATE_HOME="%{host.XDG_STATE_HOME}"   # analogous to /var/lib
 #XDG_RUNTIME_DIR set in .xprofile
 
 # reference https://docs.rs/dirs/latest/dirs/index.html
@@ -103,8 +101,8 @@ export HISTCONTROL='ignoreboth'  # 'ignoreboth' is the following:
 export HISTIGNORE='ls:bg:fg:history'  # Do not log these commands
 
 # PATH
-export SCRIPTS="%{dirs.s}"
-export PATH="$PATH:%{dirs.s}:%{dirs.o}:%{dirs.cl}/bin"
+export SCRIPTS="%{host.dirs.s}"
+export PATH="$PATH:%{host.dirs.s}:%{host.dirs.o}:%{host.dirs.cl}/bin"
 printf %s\\n ":$PATH:" | grep -q ":$CARGO_HOME/bin:" \
   || export PATH="$PATH:$CARGO_HOME/bin"
 test -d /opt/texlive/2021/bin/x86_64-linux/ \

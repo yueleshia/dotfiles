@@ -1,7 +1,7 @@
 #run: sh -c "$( nickel export % --field text --format raw )" _ path a/hello
 # run: nickel export % --field text --format raw
 
-let dirs = (import "../../profiles.ncl").current_profile.named_directories in
+let dirs = (import "../../gen_host.json").dirs in
 let max_length = dirs
   |> std.record.fields
   |> std.array.fold_left (fun acc abv =>

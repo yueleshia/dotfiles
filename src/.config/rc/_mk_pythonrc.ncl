@@ -1,6 +1,6 @@
 #run: nickel export % --field text --format raw
 
-let dirs = (import "../../profiles.ncl").current_profile.named_directories in
+let dirs = (import "../../gen_host.json").dirs in
 
 { executable = false, text = m%"
 # Lekensteyn

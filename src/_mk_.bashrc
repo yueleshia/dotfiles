@@ -39,7 +39,6 @@ rrc() {
     source "${HOME}/.profile"
   fi
   source "${XDG_CONFIG_HOME}/rc/aliasrc"
-  source "${DOTENVIRONMENT}/post-bashrc.sh" # Mostly for server-specifc configs
 }
 
 # Android Termux: Bash never run as login shell, thus '.profile' never sourced
