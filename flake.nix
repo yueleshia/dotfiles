@@ -38,7 +38,7 @@
       system  = host.system;
       builder = "/bin/sh";
       args    = [ "-c" ''${unstable.legacyPackages.${host.system}.nickel}/bin/nickel \
-        export "${nickel-source}/gen_filegen.ncl" \
+        export "${nickel-source}/gen_symlinks.ncl" \
       >$out''];
     };
   in {
