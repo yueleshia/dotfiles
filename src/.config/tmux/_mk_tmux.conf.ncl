@@ -33,7 +33,7 @@ set-option -g focus-events on
 
 ################################################################################
 # Copy mode buidings
-bind-key C-[ copy-mode   # Solve IME problems (no menu, sending wrong keys)
+bind-key C-] copy-mode   # Solve IME problems (no menu, sending wrong keys)
 bind-key -T copy-mode-vi C-q send-keys -X cancel  # Usually pressing Ctrl anyway
 
 bind-key -T copy-mode-vi Escape send-keys -X cancel
