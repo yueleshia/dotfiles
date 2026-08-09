@@ -84,11 +84,12 @@ map T ${{
 
 # Bindings
 map <esc> :clear;unselect;reload
+map e $hx "$f"
 map E $vim "$f"
-map r prompt-rename
-map t delete
+map R prompt-rename
+map T delete
 # Prepend '/.' since ${filesep} acts like a join
-map R $batch-rename.sh --relative-path-to '.' --direct "/.${fx}"
+map <c-R> $batch-rename.sh --relative-path-to '.' --direct "/.${fx}"
 map o $handle.sh terminal --file "${f}"
 map O &handle.sh gui --file "${f}"
 map D $rm -rf "$f"
@@ -97,7 +98,6 @@ map w $clipboard.sh -w "$f"
 map L $for a in $( lf -remote load | sed -e '1d' ); do ln -s "$a" ./; done
 #map <c-l> $handle.sh --file --gui "${f}"
 map <enter> shell  # enter shell
-map x $helix.sh "${f}"
 map X $aunpack "${f}"
 #map Y copyto
 map c jumpto

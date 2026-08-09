@@ -1,16 +1,20 @@
 #let contracts = import "meta/contracts.ncl" in
 
+## Channels
+#home-manager https://github.com/nix-community/home-manager/archive/release-24.05.tar.gz
+#nixpkgs https://nixos.org/channels/nixos-24.05
+#unstable https://nixos.org/channels/nixpkgs-unstable
+
+
 # https://blog.patapon.info/nixos-systemd-sway/
 
 # For dependency injection
 let env    = import "gen_environment.json" in
 let inputs = (import "inputs.ncl").args in
 
-let AbsPath = fun label value =>
-  if 0 != (std.string.length value) && "/" == (std.string.substring 0 1 value)
-  then value
-  else label |> std.contract.blame_with_message "Not an absolute path: '%{value}'"
-in
+let AbsPath = std.contract.from_predicate (fun value =>
+  'String == (std.typeof value) && 0 != (std.string.length value) && "/" == (std.string.substring 0 1 value)
+) in
 
 let shared = [
   #"%{inputs.pkgs}.git",         # Will need installed to even check out our repo
@@ -29,7 +33,7 @@ let shared = [
   "%{inputs.pkgs}.parallel", # perl
 
   "%{inputs.pkgs}.jq",   "%{inputs.pkgs}.fx",
-  "%{inputs.pkgs}.lychee",
+  "%{inputs.unstable}.lychee",
 ] in
 let colour = "" in
 
@@ -39,15 +43,18 @@ let home = "/home/%{env.username}" in
   profiles  = {
     personal = {
       packages = shared @ [
+        "%{inputs.unstable}.nickel",
+
         "%{inputs.pkgs}.aerc",
         "%{inputs.pkgs}.neovim",   "%{inputs.pkgs}.tree-sitter",
         "%{inputs.unstable}.croc",
-        "%{inputs.flakes}.reader",
+        "%{inputs.pkgs}.reader",
 
         "%{inputs.pkgs}.podman",
 
         "%{inputs.pkgs}.stc-cli",
         "%{inputs.pkgs}.transmission",
+        "%{inputs.pkgs}.clang-tools",
         "%{inputs.unstable}.go",
         "%{inputs.unstable}.zig",
         #"%{inputs.pkgs}.opentofu",
@@ -95,8 +102,9 @@ let home = "/home/%{env.username}" in
         "%{inputs.pkgs}.yq-go",    # go
         "%{inputs.pkgs}.xlsx2csv", # python
         "%{inputs.pkgs}.xsv",      # rust
-        "%{inputs.flakes}.mktoc",  # rust
-        "%{inputs.flakes}.reader", # go
+        #"%{inputs.flakes}.mktoc",  # rust
+        "%{inputs.pkgs}.github-markdown-toc-go", # go
+        "%{inputs.pkgs}.reader",   # go
         "%{inputs.unstable}.croc", # go
 
         "%{inputs.pkgs}.sxiv",

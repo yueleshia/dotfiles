@@ -27,7 +27,7 @@ nbsp  = "all"
 ################################################################################
 [keys]
 normal.esc   = ["collapse_selection", "keep_primary_selection"]
-normal.space = { q = ":quit", w = ":write", c = ":config-reload" }
+normal.space = { q = ":quit", w = ":write", c = ":config-reload", e = ":reload" }
 
 ### Multilingual support (Vim-barbaric): Swap to english for normal mode
 # Fctix's model is your IME has two modes: active and deactived
@@ -70,20 +70,19 @@ insert.esc   = [":sh fcitxremote.sh -c", "normal_mode"]
 normal."C-x"."C-u"   = "@<esc>:insert-output /bin/printf %b \\\\\\\\u00" # sh printf does not support \\u
 insert."C-x"."C-u"   = "@<esc>:insert-output /bin/printf %b \\\\\\\\u00" # sh printf does not support \\u
 
-insert.tab.s.a = ":insert-output tmux-window-output-to-buffer.sh snippets.sh"
-insert.tab.s.s = ":insert-output tmux-window-output-to-buffer.sh snippets.sh \"symbols\""
-insert.tab.tab = ":insert-output tmux-window-output-to-buffer.sh snippets.sh \"$HX_EXT\""
+insert."C-s"."C-a" = ":insert-output tmux-window-output-to-buffer.sh snippets.sh"
+insert."C-s"."C-s" = ":insert-output tmux-window-output-to-buffer.sh snippets.sh \"symbols\""
+insert."C-s"."C-f" = ":insert-output tmux-window-output-to-buffer.sh snippets.sh \"$HX_EXT\""
 
-normal.tab.p   = "@?<lt><gt><ret>c"
-insert.tab.p   = "@<esc><tab>p"
-normal.tab.n   = "@/<lt><gt><ret>c"
-insert.tab.n   = "@<esc><tab>n"
+insert."C-x"."C-o" = "completion"
+normal."]".tab     = "@?<lt><gt><ret>"
+normal."[".tab     = "@/<lt><gt><ret>"
 
 # We will have run \q twice for auto format, all commands are run async it seems
-normal."\\".q  = [":write", ":sh [ -n \"${TMUX}\" ] && tmux new-window -d build.sh background --temp \"$HX_PATH\""]
+normal."\\".q  = [":sh [ -n \"${TMUX}\" ] && tmux new-window -d build.sh background --temp \"${PWD}/%{buffer_name}\""]
 # We sleep bec ause helix seems to run these async, thus creating two tmux panes
-normal."\\".w  = [":write", ":sh tmux-alt-pane.sh send-keys -X cancel", ":sh sleep 0.03; tmux-alt-pane.sh send-keys \"build.sh build --temp \" \"$HX_PATH\" Enter"]
-normal."\\".e  = [":write", ":sh tmux-alt-pane.sh send-keys -X cancel", ":sh tmux-editor-run.sh \"$HX_EXT\" \"$HX_PATH\""]
+normal."\\".w  = [":sh tmux-alt-pane.sh send-keys -X cancel 2>/dev/null", ":sh sleep 0.03; tmux-alt-pane.sh send-keys \"build.sh build --temp \" \"${PWD}/%{buffer_name}\" Enter"]
+normal."\\".e  = [":sh tmux-alt-pane.sh send-keys -X cancel 2>/dev/null", ":sh sleep 0.03; tmux-editor-run.sh \"%sh{ext=\"%{buffer_name}\"; printf %%s \"${ext##*\\.}\"}\" \"${PWD}/%{buffer_name}\""]
 normal."\\".r  = ":sh tmux-alt-pane.sh send-keys -X cancel"
 normal."\\".t  = ":sh tmux-alt-pane.sh kill-pane"
-normal."\\".l  = [":write", ":sh tmux-alt-pane.sh send-keys \"build.sh lint \" \"$HX_PATH\" ENTER", ":reload"]
+normal."\\".l  = [":write", ":sh tmux-alt-pane.sh send-keys -X cancel 2>/dev/null", ":sh sleep 0.03; tmux-alt-pane.sh send-keys \"build.sh lint \" \"${PWD}/%{buffer_name}\" ENTER; sleep 0.5", ":reload"]
