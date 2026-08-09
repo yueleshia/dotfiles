@@ -1,11 +1,3 @@
-#let contracts = import "meta/contracts.ncl" in
-
-## Channels
-#home-manager https://github.com/nix-community/home-manager/archive/release-24.05.tar.gz
-#nixpkgs https://nixos.org/channels/nixos-24.05
-#unstable https://nixos.org/channels/nixpkgs-unstable
-
-
 # https://blog.patapon.info/nixos-systemd-sway/
 
 # For dependency injection
@@ -20,22 +12,29 @@ let shared = [
   #"%{inputs.pkgs}.git",         # Will need installed to even check out our repo
 
   #"%{inputs.testpkgs}.nickel",
-  "%{inputs.pkgs}.eza", "%{inputs.pkgs}.ripgrep", "%{inputs.pkgs}.fd", "%{inputs.pkgs}.tree",
+  "%{inputs.pkgs}.eza", "%{inputs.pkgs}.ripgrep", "%{inputs.pkgs}.fd",
+  "%{inputs.pkgs}.tree", "%{inputs.pkgs}.which",
   "%{inputs.unstable}.helix",
   "%{inputs.pkgs}.tmux",
   "%{inputs.pkgs}.htop",
-  "%{inputs.pkgs}.nmap", "%{inputs.pkgs}.unixtools.nettools", "%{inputs.pkgs}.dig",
+  "%{inputs.pkgs}.nmap", "%{inputs.pkgs}.net-tools", "%{inputs.pkgs}.dig",
 
-
-  "%{inputs.pkgs}.lf",   "%{inputs.pkgs}.skim", "%{inputs.pkgs}.fzf" ,  "%{inputs.pkgs}.atool",
+  "%{inputs.pkgs}.lf",   "%{inputs.pkgs}.skim", "%{inputs.pkgs}.fzf",
   "%{inputs.pkgs}.entr",
-  "%{inputs.pkgs}.pass", "%{inputs.pkgs}.gnupg", "%{inputs.pkgs}.pinentry-curses",
+  "%{inputs.pkgs}.pass", "%{inputs.pkgs}.gopass", "%{inputs.pkgs}.gnupg",
+  #"%{inputs.pkgs}.pinentry-curses",
+  #"%{inputs.pkgs}.pinentry-qt", # @TODO: This breaks dinit for some reason...
   "%{inputs.pkgs}.parallel", # perl
+  "%{inputs.pkgs}.rsync",
+
+  "%{inputs.pkgs}.atool",
+  #"%{inputs.pkgs}.tar",
+  #"%{inputs.pkgs}.xz",
+  "%{inputs.pkgs}.zip", "%{inputs.pkgs}.unzip",
 
   "%{inputs.pkgs}.jq",   "%{inputs.pkgs}.fx",
   "%{inputs.unstable}.lychee",
 ] in
-let colour = "" in
 
 let home = "/home/%{env.username}" in
 {
@@ -45,19 +44,30 @@ let home = "/home/%{env.username}" in
       packages = shared @ [
         "%{inputs.unstable}.nickel",
 
+        "%{inputs.pkgs}.gitui", # rust
         "%{inputs.pkgs}.aerc",
         "%{inputs.pkgs}.xan",
         "%{inputs.pkgs}.neovim",   "%{inputs.pkgs}.tree-sitter",
         "%{inputs.unstable}.croc",
         "%{inputs.pkgs}.reader",
+        #"%{inputs.pkgs}.jocalsend",
+        "%{inputs.pkgs}.remind",
+        #"%{inputs.pkgs}.remntui",
+        "%{inputs.pkgs}.ffmpeg",
 
+        "%{inputs.pkgs}.dejsonlz4",
         "%{inputs.pkgs}.podman",
 
+        #"%{inputs.pkgs}.wayprompt", # @TODO: For some, the tty version of pinentry-wayprompt does not work
+        "%{inputs.pkgs}.mako", "%{inputs.pkgs}.libnotify",
+        "%{inputs.pkgs}.swayimg",
 
+        "%{inputs.pkgs}.tor-browser",
         "%{inputs.pkgs}.stc-cli",
-        "%{inputs.pkgs}.transmission",
+        "%{inputs.pkgs}.transmission_4",
         "%{inputs.pkgs}.clang-tools",
         "%{inputs.unstable}.go",
+        "%{inputs.unstable}.rustup",
         #"%{inputs.unstable}.zig",
         "%{inputs.pkgs}.deno",
         #"%{inputs.unstable}.bun", # https://github.com/NixOS/nixpkgs/pull/313760
@@ -65,9 +75,11 @@ let home = "/home/%{env.username}" in
         "%{inputs.pkgs}.asciidoctor", "%{inputs.pkgs}.rubyPackages.rouge",
         "%{inputs.pkgs}.typst",
         "%{inputs.pkgs}.qrcode",
-        "%{inputs.pkgs}.streamlink",
+        "%{inputs.pkgs}.streamlink", "%{inputs.pkgs}.yt-dlp-light",
+        "%{inputs.pkgs}.mpv",
+        "%{inputs.pkgs}.zathura", "%{inputs.pkgs}.zathuraPkgs.zathura_pdf_mupdf",
+        "%{inputs.pkgs}.zathuraPkgs.zathura_cb", "%{inputs.pkgs}.zathuraPkgs.zathura_ps",
         #"%{inputs.pkgs}.opentofu",
-        #"%{inputs.pkgs}.mpv",
         #"%{inputs.pkgs}.ttdl",
         #"%{inputs.pkgs}.todopy",
         #"%{inputs.pkgs}.tuido",
@@ -84,6 +96,83 @@ let home = "/home/%{env.username}" in
         x  = "/mnt/a",
       },
       extra = m%"
+        #home.activation = {
+        #  post_bashrc = {
+        #  };
+        #};
+
+        i18n.inputMethod = {
+          enable = true;
+          type   = "fcitx5";
+
+          fcitx5.waylandFrontend = true;
+          fcitx5.addons = [
+            #%{inputs.pkgs}.fcitx5-qt
+            %{inputs.pkgs}.fcitx5-gtk
+            %{inputs.pkgs}.fcitx5-mozc
+            %{inputs.pkgs}.fcitx5-pinyin-zhwiki
+            %{inputs.pkgs}.qt6Packages.fcitx5-chinese-addons
+            #%{inputs.pkgs}.fcitx5-rime
+            %{inputs.pkgs}.fcitx5-hangul
+            #%{inputs.pkgs}.fcitx5-table-other
+            %{inputs.pkgs}.qt6Packages.fcitx5-configtool
+          ];
+        };
+
+        # See: https://privacytests.org
+        # I would prefer mullvad browser, but home-manager does not have it
+        programs.librewolf = {
+          enable = true;
+          nativeMessagingHosts = [ %{inputs.pkgs}.passff-host ];
+
+          # See: gist.github.com/heywoodlh/b6d0e7f01e4e8ce34e056f12935f8ea
+          # firefox on MacOS seems to require workarounds
+          #package = if pkgs.stdenv.isDarwin then pkgs.runCommand "firefox-0.0.0" {} "mkdir $out"
+
+          # @TODO: I can install, but not download extensions in home-manager's
+          #        LibreWolf. So nix installing extensions also does not work.
+          # Use ../install/install-firefox-extensions.sh script to download
+          # Check about:policies
+          policies = {
+            #DisableMasterPasswordCreation = true; # I use gopass
+
+            #Extensions = {};
+            ExtensionSettings = {
+              "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = { private_browsing = false; }; # videospeed
+              "{b86e4813-687a-43e6-ab65-0bde4ab75758}" = { private_browsing = true; }; # localcdn
+              "passff@invicem.pro"                     = { private_browsing = true; };
+              "@testpilot-containers"                  = { private_browsing = true; };
+              "uBlock0@raymondhill.net"                = { private_browsing = true; };
+            };
+          };
+
+          profiles = {
+            main = {
+              id = 0;
+              name = "main";
+              isDefault = true;
+
+              # Ideally, you want as close to defaults as possible to avoid fingerprinting
+              settings = {
+                "middlemouse.paste"           = false;
+                "browser.gesture.swipe.left"  = "";
+                "browser.gesture.swipe.right" = "";
+              };
+
+              #containers = {
+              #  media  = { id = 0; name = ""; color = "green"; };
+              #  retail = { id = 0; name = ""; color = "green"; };
+              #  bank   = { id = 3; name = ""; color = "green"; };
+              #};
+              #search = {
+              #  engines = {
+              #    ""
+              #  };
+              #};
+            };
+          };
+        };
+
         #wayland.windowManager.sway = {
         #  enable = true;
         #  config = rec {

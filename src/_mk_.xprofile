@@ -15,10 +15,6 @@
   && eval "$( dbus-launch --sh-syntax --exit-with-session )"
 
 # Export fcitx variables before running graphical programs
-export    XMODIFIERS="@im=fcitx"
-export GTK_IM_MODULE=fcitx
-export  QT_IM_MODULE=fcitx
-export SDL_IM_MODULE=fcitx
 if command -v fcitx5 2>&1 >/dev/null; then
   fcitx5 -d  # Restart fcitx5
 elif command -v fcitx 2>&1 >/dev/null; then

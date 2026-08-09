@@ -136,6 +136,12 @@ export            LESS=-R
 #export LESS_TERMCAP_us="$( printf '%b' '\033[1;32m' )"
 #export LESS_TERMCAP_ue="$( printf '%b' '\033[0m' )"
 
+# GUI env vars
+export   XMODIFIERS="@im=fcitx"
+export GTK_IM_MODULE=fcitx
+export  QT_IM_MODULE=fcitx
+export SDL_IM_MODULE=fcitx
+
 # Having 'envrc' sourced is mildly important for regular function
 # Source .bashrc to have the same environment in tty as in Xorg
 # Login shell starts with '-bash', test if it ends with bash

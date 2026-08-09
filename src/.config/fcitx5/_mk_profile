@@ -1,0 +1,47 @@
+[Groups/0]
+# Group Name
+Name=Default
+# Layout
+Default Layout=us
+# Default Input Method
+DefaultIM=keyboard-us-alt-intl-unicode
+
+[Groups/0/Items/0]
+# Name
+Name=keyboard-us #en1
+# Layout
+Layout=
+
+[Groups/0/Items/1]
+# Name
+Name=keyboard-us-alt-intl-unicode #en2
+# Layout
+Layout=
+
+[Groups/0/Items/2]
+# Name
+Name=mozc #jp1
+# Layout
+Layout=
+
+[Groups/0/Items/3]
+# Name
+Name=hangul #kr1
+# Layout
+Layout=
+
+[Groups/0/Items/4]
+# Name
+Name=keyboard-cn-altgr-pinyin #en3
+# Layout
+Layout=
+
+[Groups/0/Items/5]
+# Name
+Name=pinyin #zh1
+# Layout
+Layout=
+
+[GroupOrder]
+0=Default
+

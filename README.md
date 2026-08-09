@@ -14,6 +14,15 @@ To use this:
 1. Clone this repo. e.g. `git clone https://github.com/yueleshia/dotfiles`. GitHub supports direct downloads.
 1. Look at [./gen_environment.nix](gen_environment.nix) and [./src/profiles.ncl](src/profiles.ncl) to see which host you wish to use.
 1. `dotfiles/make.sh <host>`, e.g. `dotfiles/make.sh port`
+1. Look through the [dotfiles/install](install) directory for additional scripts.
+
+If you wish to use gopass with the browser:
+
+1. `gpg --full-generate-key`
+1. transfer your public key to the old computer
+1. re-encrypt your pass store on the old computer with `gopass init`
+1. transfer your store to the new computer
+1. `gopass-jsonapi configure` (as `firefox` for any firefox-derivative)
 
 # How it works
 

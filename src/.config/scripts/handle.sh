@@ -249,7 +249,7 @@ local_handle_mime() {
     ;; image/*)
       #t        "${CODE_NOPREVIEW}" ueberzug "${1}"
       t        "${CODE_NOPREVIEW}" chafa -- "${1}"
-      g_launch "${CODE_NOPREVIEW}" sxiv -a -- "${1}"
+      g_launch "${CODE_NOPREVIEW}" swayimg "${1}"
       e_launch "${CODE_NOPREVIEW}" krita -- "${1}"
       #p       "${CODE_STDOUT}"    img2txt --gamma=0.6 -- "${1}"
       #p       "${CODE_STDOUT}"       \

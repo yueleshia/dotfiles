@@ -216,10 +216,8 @@ set timeoutlen=1000  " https://github.com/rlue/vim-barbaric/issues/15
 set ttimeoutlen=0    " Immediately run fcitx-remote after entering/leaving
 augroup CustomBarbaric
   autocmd!
-  autocmd InsertEnter * if executable('fcitx-remote')  | call system('fcitx-remote -o') | endif
-  autocmd InsertLeave * if executable('fcitx-remote')  | call system('fcitx-remote -c') | endif
-  autocmd InsertEnter * if executable('fcitx5-remote') | call system('fcitx5-remote -o') | endif
-  autocmd InsertLeave * if executable('fcitx5-remote') | call system('fcitx5-remote -c') | endif
+  autocmd InsertEnter * call system('fcitx-remote.sh -o')
+  autocmd InsertLeave * call system('fcitx-remote.sh -c')
   " This always prints some ANSI escape codes, not sure how to fix it
   " Deactivate on VimEnter
   "autocmd VimEnter    * if executable('fcitx-remote') | call system('fcitx-remote -c') | endif

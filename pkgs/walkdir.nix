@@ -19,8 +19,8 @@ strip_basedir = dir:
 walkdir_for_mk = src__out: todo_dir_list:
   let
   inodes      = builtins.concatLists(map read_dir todo_dir_list);
-  dir__nodes  = builtins.filter (x: x.type == "directory")                      inodes;
-  file_nodes  = builtins.filter (x: x.type == "symlink" || x.type == "regular") inodes;
+  dir__nodes  = builtins.filter (x: x.type == "directory") inodes;
+  file_nodes  = builtins.filter (x: x.type == "symlink" || x.type == "regular" || x.type == "directory") inodes;
 
   paths_dir = map (x: "${x.dir}/${x.name}") dir__nodes;
   paths_ncl = map

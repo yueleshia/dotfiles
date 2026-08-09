@@ -1,0 +1,5 @@
+# for default: ghostty +show-config --docs --default
+
+# ctrl+shift+, to reload
+theme = One Double Light
+font-size = 10

@@ -3,14 +3,17 @@
 # This script relies only on POSIX-shellscript syntax and nix builtins.
 # Because we are installing our environment, we do not have any dependencies.
 
-#run: % test
+#run: % port
 
 cd "${0%/*}" || exit "$?"
 
 main() {
+  file=~/.nix-profile/etc/profile.d/nix.sh
+  [ -x "${file}" ] && . "${file}" # if after first install and refreshed from .bashrc
   if ! command -v "nix" >/dev/null 2>/dev/null; then
-    script="$( curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)" || exit "$?"
-    sh "${script}" --no-daemon || exit "$?"
+    script="$( curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install )" || exit "$?"
+    sh -c "${script}" --no-daemon || exit "$?"
+    . "${file}" || exit "$?"
   fi
   if ! command -v "home-manager" >/dev/null 2>/dev/null; then
     url="$( nix-instantiate --eval --raw --expr '(import ./flake.nix).inputs.home-manager.url' )" || exit "$?"
@@ -45,6 +48,7 @@ main() {
   deglob="$( printf %s\\n ${glob} )"
   env "${USER}" "${deglob}" "${WD}/src" -A "${choice}" --json >"src/gen_environment.json"
 
+  echo 'Make sure to create `mkdir ~/.config/dinit.d/boot.d`'
   home-manager switch --extra-experimental-features "nix-command flakes" --flake ".#default" --show-trace
 
   # Do not disturb git history
