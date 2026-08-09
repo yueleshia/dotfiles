@@ -19,7 +19,7 @@ let AbsPath = std.contract.from_predicate (fun value =>
 let shared = [
   #"%{inputs.pkgs}.git",         # Will need installed to even check out our repo
 
-  "%{inputs.testpkgs}.nickel",
+  #"%{inputs.testpkgs}.nickel",
   "%{inputs.pkgs}.eza", "%{inputs.pkgs}.ripgrep", "%{inputs.pkgs}.fd", "%{inputs.pkgs}.tree",
   "%{inputs.unstable}.helix",
   "%{inputs.pkgs}.tmux",
@@ -46,17 +46,26 @@ let home = "/home/%{env.username}" in
         "%{inputs.unstable}.nickel",
 
         "%{inputs.pkgs}.aerc",
+        "%{inputs.pkgs}.xan",
         "%{inputs.pkgs}.neovim",   "%{inputs.pkgs}.tree-sitter",
         "%{inputs.unstable}.croc",
         "%{inputs.pkgs}.reader",
 
         "%{inputs.pkgs}.podman",
 
+
         "%{inputs.pkgs}.stc-cli",
         "%{inputs.pkgs}.transmission",
         "%{inputs.pkgs}.clang-tools",
         "%{inputs.unstable}.go",
-        "%{inputs.unstable}.zig",
+        #"%{inputs.unstable}.zig",
+        "%{inputs.pkgs}.deno",
+        #"%{inputs.unstable}.bun", # https://github.com/NixOS/nixpkgs/pull/313760
+
+        "%{inputs.pkgs}.asciidoctor", "%{inputs.pkgs}.rubyPackages.rouge",
+        "%{inputs.pkgs}.typst",
+        "%{inputs.pkgs}.qrcode",
+        "%{inputs.pkgs}.streamlink",
         #"%{inputs.pkgs}.opentofu",
         #"%{inputs.pkgs}.mpv",
         #"%{inputs.pkgs}.ttdl",
@@ -96,12 +105,13 @@ let home = "/home/%{env.username}" in
     },
     devops = {
       packages = shared @ [
+        "%{inputs.pkgs}.p7zip",
         "%{inputs.pkgs}.stc-cli",
         "%{inputs.pkgs}.gitui",    # rust
         "%{inputs.pkgs}.delta",    # rust
         "%{inputs.pkgs}.yq-go",    # go
         "%{inputs.pkgs}.xlsx2csv", # python
-        "%{inputs.pkgs}.xsv",      # rust
+        "%{inputs.pkgs}.xan",      # rust
         #"%{inputs.flakes}.mktoc",  # rust
         "%{inputs.pkgs}.github-markdown-toc-go", # go
         "%{inputs.pkgs}.reader",   # go
@@ -116,12 +126,12 @@ let home = "/home/%{env.username}" in
         "%{inputs.pkgs}.podman",
         "%{inputs.pkgs}.buildah",
 
-        "%{inputs.pkgs}.azure-cli", "%{inputs.pkgs}.azure-cli-extensions.azure-devops",
-        "%{inputs.pkgs}.awscli2",   "%{inputs.pkgs}.ssm-session-manager-plugin",
-        "%{inputs.pkgs}.mysql",     "%{inputs.unstable}.rainfrog",
-        "%{inputs.pkgs}.sqlcmd",
-        "%{inputs.pkgs}.sqlint",    "%{inputs.pkgs}.sqlcheck",
-        "%{inputs.pkgs}.mongosh",   "%{inputs.pkgs}.mongodb-tools",
+        "%{inputs.pkgs}.azure-cli",   "%{inputs.pkgs}.azure-cli-extensions.azure-devops",
+        "%{inputs.unstable}.awscli2", "%{inputs.pkgs}.ssm-session-manager-plugin",
+        "%{inputs.pkgs}.mariadb",     "%{inputs.unstable}.rainfrog",
+        #"%{inputs.pkgs}.sqlcmd",
+        "%{inputs.pkgs}.sqlint",      "%{inputs.pkgs}.sqlcheck",
+        "%{inputs.pkgs}.mongosh",     "%{inputs.pkgs}.mongodb-tools",
 
         "%{inputs.pkgs}.podman",
         "%{inputs.pkgs}.powershell",
@@ -129,7 +139,7 @@ let home = "/home/%{env.username}" in
         "%{inputs.pkgs}.terragrunt", "%{inputs.pkgs}.terraform-ls",
         #"%{inputs.pkgs}.ansible",
         "%{inputs.pkgs}.deno",
-        "%{inputs.pkgs}.go",
+        "%{inputs.pkgs}.go", "%{inputs.pkgs}.gopls",
         "%{inputs.pkgs}.python3",
         "%{inputs.pkgs}.graphviz", "%{inputs.pkgs}.d2",
         "%{inputs.pkgs}.nls",
