@@ -146,11 +146,11 @@ main() {
     ;; ps1)     pwsh "${file}"
     ;; py)      run_from_root "${file}" "venv" process_python test.py
                 run_from_root "${file}" "venv" process_python "${fpr_target}"
-    ;; roc)     roc dev "${file}"
+    ;; roc)     roc "${file}"
     ;; rs)      print_do cargo run
     ;; ts)      bun run "${file}"
     ;; sh)      print_do sh "${file}"
-    ;; zig)     zig build run
+    ;; zig)     zig test "${file}"
 
     ;; nix)     nix-instantiate --eval --strict "${file}"
     ;; ncl)     nickel export "${file}"

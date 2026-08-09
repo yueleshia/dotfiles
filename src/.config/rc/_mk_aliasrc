@@ -30,7 +30,7 @@ alias    cw='cd_of sh -c '\''
 alias     d='sdcv'
 alias    da='podman attach'
 alias    dr='podman run -it --rm'
-alias  diso='dd status=progress conv=fdatasync'
+alias   dgg='sh -c '\''DISCORDO_TOKEN="$( pass show user/discord.com | sed -n "s/^token: *//p" )" discordo '\'' _'
 
 alias    dc='sdcv --data-dir $STARDICT_DATA_DIR/ca'
 alias  dcsa='sh -c '\''docker start  "${1}"; docker attach "${1}"'\'' _'

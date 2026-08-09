@@ -56,7 +56,7 @@ main() {
   ;; *) printf %s\\n "invalid subcommand: \`$*\`" >&2; exit 1
   esac
 
-  file_extension="$( printf %s\\n "${1##*.}" | tr '[:upper:]' '[:lower:]' )"
+  file_extension="$( printf %s\\n "${2##*.}" | tr '[:upper:]' '[:lower:]' )"
   HANDLE_TYPE='extension' handle_extension "${file}"
 
   mimetype="$( file --dereference --brief --mime-type -- "${file}" )" || exit 1
@@ -76,7 +76,7 @@ main() {
 #TODO think about to proceed with fallbacks or not (i.e. the early exit's)
 handle_extension() {
   #echo local >&2
-  case "${lowercase_extension}"
+  case "${file_extension}"
   in 7z|a|ace|alz|arc|arj|bz|bz2|cab|cpio|deb|gz|jar|lha|lz|lzh|lzma|lzo|\
      rar|rpm|rz|t7z|tar|tbz|tbz2|tgz|tlz|txz|tZ|tzo|war|xpi|xz|Z|zip)
     p  "${EXIT_PREVIEWSTDOUT}" atool --list -- "${1}"
@@ -147,12 +147,16 @@ local_handle_mime() {
     p  "${EXIT_PREVIEWSTDOUT}" sh -c 'exiftool -- "${1}"; chafa -f symbols "${1}"' _ "${1}"
 
   # Video and audio
-  ;; video/* | audio/* | application/octet-stream)
+  ;; video/* | application/octet-stream)
     t  "${EXIT_NOPREVIEW}" mpv --vo=tct "${1}"
-    g  "${EXIT_NOPREVIEW}" mpv "${1}"
+    g  "${EXIT_NOPREVIEW}" sh -c 'mpv "${1}" >/dev/null 2>&1' _ "${1}"
     p  "${EXIT_NOPREVIEW}" exiftool "${1}"
     #p  "${EXIT_NOPREVIEW}" mediainfo "${1}"
     # TODO: thumbnail preview
+  ;; audio/*)
+    t  "${EXIT_NOPREVIEW}" sh -c 'exiftool -b -Picture "${1}" | chafa -f symbols; mpv --no-audio-display "${1}"' _ "${1}"
+    g  "${EXIT_NOPREVIEW}" sh -c 'mpv "${1}" >/dev/null 2>&1' _ "${1}"
+    p  "${EXIT_NOPREVIEW}" sh -c 'exiftool "${1}"; exiftool -b -Picture "${1}" | chafa -f symbols --view-size 60x' _ "${1}"
   esac
 }
 

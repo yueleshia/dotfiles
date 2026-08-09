@@ -32,11 +32,11 @@
     unstable.rustup
     #unstable.zig
     pkgs.deno
-    #unstable.bun # https://github.com/NixOS/nixpkgs/pull/313760
 
     pkgs.asciidoctor pkgs.rubyPackages.rouge
     pkgs.typst
     pkgs.qrcode
+    pkgs.opustags
     pkgs.chafa
     pkgs.streamlink pkgs.yt-dlp-light
     #pkgs.mpv # I get `vo_x11_init: Assertion `!vo->x11' failed`
@@ -64,6 +64,45 @@
       #pkgs.fcitx5-table-other
       pkgs.qt6Packages.fcitx5-configtool
     ];
+  };
+
+  programs.firefox = {
+    enable = true;
+
+    profiles = {
+      nojavascript = {
+        id = 0;
+        name = "nojavascript";
+        isDefault = true;
+
+        # Ideally, you want as close to defaults as possible to avoid fingerprinting
+        settings = {
+          "browser.gesture.swipe.left"        = "";
+          "browser.gesture.swipe.right"       = "";
+          "browser.ml.enable"                 = false;
+          "javascript.enabled"                = false;
+          "middlemouse.paste"                 = false;
+        };
+        search = {
+          force   = true;
+          default = "ddgHTML";
+          order   = [ "ddgHTML" "searx" "ddg" ];
+          engines = {
+            "ddgHTML" = {
+              urls = [{ template = "https://html.duckduckgo.com/html?q={searchTerms}"; }];
+              definedAliases = [ "@ddg" ];
+            };
+            "Searx" = {
+              urls = [{ template = "https://searx.aicampground.com/?q={searchTerms}"; }];
+              iconUpdateURL = "https://nixos.wiki/favicon.png";
+              updateInterval = 24 * 60 * 60 * 1000; # every day
+              definedAliases = [ "@searx" ];
+            };
+          };
+        };
+
+      };
+    };
   };
 
   # See: https://privacytests.org
@@ -101,21 +140,28 @@
 
         # Ideally, you want as close to defaults as possible to avoid fingerprinting
         settings = {
-          "middlemouse.paste"           = false;
           "browser.gesture.swipe.left"  = "";
           "browser.gesture.swipe.right" = "";
+          "middlemouse.paste"           = false;
         };
 
-        #containers = {
-        #  media  = { id = 0; name = ""; color = "green"; };
-        #  retail = { id = 0; name = ""; color = "green"; };
-        #  bank   = { id = 3; name = ""; color = "green"; };
-        #};
-        #search = {
-        #  engines = {
-        #    ""
-        #  };
-        #};
+        search = {
+          force   = true;
+          default = "ddgHTML";
+          order   = [ "ddgHTML" "searx" "ddg" ];
+          engines = {
+            "ddgHTML" = {
+              urls = [{ template = "https://html.duckduckgo.com/html?q={searchTerms}"; }];
+              definedAliases = [ "@ddg" ];
+            };
+            "Searx" = {
+              urls = [{ template = "https://searx.aicampground.com/?q={searchTerms}"; }];
+              iconUpdateURL = "https://nixos.wiki/favicon.png";
+              updateInterval = 24 * 60 * 60 * 1000; # every day
+              definedAliases = [ "@searx" ];
+            };
+          };
+        };
       };
     };
   };

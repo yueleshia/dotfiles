@@ -8,6 +8,9 @@ use-grammars = { only = [
   "toml", "typescript", "tsx", "vim", "xml", "yaml", "zig"
 ] }
 
+[language-server.roc]
+command = "roc"
+args    = ["experimental-lsp"]
 [language-server.clangd]
 command = "clangd"
 [language-server.rnix-lsp]
@@ -42,6 +45,12 @@ name             = "c"
 scope            = "source.c"
 file-types       = ["c", "h"]
 language-servers = [{ name = "clangd" }]
+
+[[language]]
+name             = "roc"
+scope            = "source.roc"
+file-types       = ["roc"]
+language-servers = [{ name = "roc" }]
 
 [[language]]
 name             = "rust"

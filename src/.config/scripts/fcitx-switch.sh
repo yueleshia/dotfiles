@@ -2,8 +2,8 @@
 fcitx5-remote -c
 choice="$(
   {
-    printf %s\\n "#en1 keyboard-us"
-    printf %s\\n "#en2 keyboard-us-alt-intl-unicode"
+    printf %s\\n "#en1 keyboard-us-alt-intl-unicode"
+    printf %s\\n "#en2 keyboard-us"
     printf %s\\n "#en3 keyboard-cn-altgr-pinyin"
     printf %s\\n "#jp1 mozc"
     printf %s\\n "#jp2 anthy"

@@ -63,14 +63,17 @@ cmd prompt-rename ${{
    if [ "${name}" != "${name#*"${newline}"}" ]; then
      lf -remote "send ${id} echoerr Contains newline(s), use 'R' instead"
    else
-     single_line="$( printf %s\\n "${name}" | sed "s/'/'\\\\''/g;1s/^/'/;\$s/\$/'/" )"
+     single_line="$( printf %s\\n "${name}" \
+      | sed "s/'/'\\\\''/g;1s/^/'/;\$s/\$/'/" \
+      | sed 's/ /<space>/g' \
+     )"
      lf -remote "send ${id} push :rename<space>${single_line}"
    fi
    fcitx-remote.sh -o
 }}
 
-# Test
-map T ${{
+# Info
+map I ${{
   notify.sh "$(
     printf %s\\n \
       "f:  |$f|" \
@@ -81,11 +84,12 @@ map T ${{
 }}
 
 # Bindings (use `map A &cmd` for background)
-map <esc> :clear;unselect;reload
+map <esc> :clear;unselect;reload;$fcitx5-remote -o
 map e $hx "$f"
 map E $vim "$f"
 map R prompt-rename
-map T delete
+map T $music-tag.sh "$f"
+#map T delete
 # Prepend '/.' since ${filesep} acts like a join
 map <c-R> $batch-rename.sh --relative-path-to '.' --direct "/.${fx}"
 map o $handle.sh t "${f}"
